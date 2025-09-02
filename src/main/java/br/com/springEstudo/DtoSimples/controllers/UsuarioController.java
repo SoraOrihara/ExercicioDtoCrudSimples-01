@@ -1,5 +1,6 @@
 package br.com.springEstudo.DtoSimples.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.springEstudo.DtoSimples.business.UsuarioService;
@@ -28,6 +30,10 @@ public class UsuarioController {
 		this.usuarioService=usuarioService;
 	}
 	
+	@GetMapping("/todos")
+	public ResponseEntity<List<UsuarioResponseDTO>> listarTodos(){
+		return ResponseEntity.ok().body(usuarioService.listarTodos());
+	}
 	
 	@PostMapping("/create")
 	public ResponseEntity<UsuarioResponseDTO> create(@RequestBody UsuarioRequestDTO request){
@@ -45,14 +51,14 @@ public class UsuarioController {
 	}
 	
 	
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Void> deletarPorId(@PathVariable UUID id){
+	@DeleteMapping("/deleteById")
+	public ResponseEntity<Void> deletarPorId(@RequestParam UUID id){
 		usuarioService.deletarPorID(id);
 		return ResponseEntity.ok().build();
 	}
 	
-	@DeleteMapping("/delete/{email}")
-	public ResponseEntity<Void> deletarPorEmail(@PathVariable String email){
+	@DeleteMapping("/deleteByEmail")
+	public ResponseEntity<Void> deletarPorEmail(@RequestParam String email){
 		usuarioService.deletarPorEmail(email);
 		return ResponseEntity.ok().build();
 	}

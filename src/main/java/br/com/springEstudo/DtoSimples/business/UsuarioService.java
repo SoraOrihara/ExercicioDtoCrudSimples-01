@@ -32,6 +32,9 @@ public class UsuarioService {
 	}
 	
 	public UsuarioRecord buscarPorEmail(String email) {
+		if(!usuarioRepository.existsByEmail(email)) {
+			throw new RuntimeException("Email: "+email+" - não existente");
+		}
 		return usuarioMapper.paraUsuarioRecord(usuarioRepository.findByEmail(email));
 	}
 	
@@ -40,6 +43,7 @@ public class UsuarioService {
 	}
 	
 	public UsuarioResponseDTO update(UsuarioRequestDTO request , UUID id) {
+		
 		UsuarioEntity entity = usuarioRepository.findById(id).orElseThrow();
 		usuarioUpdate.updateUsuario(request, entity);
 		return usuarioMapper.paraUsuarioResponseDTO(usuarioRepository.save(entity));
